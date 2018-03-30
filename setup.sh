@@ -8,3 +8,7 @@ cd go-ipfs
 ./install.sh
 ipfs init
 
+# setup jekyll. NOTE: must have ruby installed
+gem install jekyll bundler
+
+
