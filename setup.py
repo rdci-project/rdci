@@ -10,11 +10,11 @@ setup(
     author='None',
     author_email='None',
     url="https://gitlab.com/hackingforsweden/hfs2018",
-    install_requires=["click"],
+    install_requires=["click", "requests"],
     packages=find_packages(exclude=["tests*"]),
     test_suite="tests",
     license='MIT',
     entry_points={
-        'console_scripts': ['hfs2018 = hfs2018.cli:run']
+        'console_scripts': ['hfs2018 = hfs2018.cli:main']
     },
 )
