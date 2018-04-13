@@ -1,0 +1,3 @@
+[submodule "skyddsrum/ipfs-maps"]
+	path = skyddsrum/ipfs-maps
+	url = https://github.com/davidar/ipfs-maps
