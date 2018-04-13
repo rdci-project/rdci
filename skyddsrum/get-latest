@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wget http://gis-services.metria.se/msbfeed/filer/Skyddsrum.zip
