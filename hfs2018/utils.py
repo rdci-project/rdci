@@ -5,6 +5,7 @@ import requests
 
 IPFS_URL="https://dist.ipfs.io/go-ipfs/v0.4.14/go-ipfs_v0.4.14_darwin-amd64.tar.gz"
 LOCAL_FILE="go-ipfs.tar.gz"
+IPFS_BIN_LOCATION = "go-ipfs/ipfs"
 
 def download_ipfs():
     r = requests.get(IPFS_URL, stream=True)
@@ -17,4 +18,4 @@ def download_ipfs():
     tar.extractall()
     tar.close()
 
-    #return local_filename
+    return IPFS_BIN_LOCATION
