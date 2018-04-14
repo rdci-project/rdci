@@ -7,3 +7,6 @@
 [submodule "skyddsrum/tippecanoe"]
 	path = skyddsrum/tippecanoe
 	url = https://github.com/mapbox/tippecanoe
+[submodule "skyddsrum/mbutil"]
+	path = skyddsrum/mbutil
+	url = https://github.com/mapbox/mbutil
