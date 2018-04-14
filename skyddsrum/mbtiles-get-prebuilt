@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Gets the mbtiles (limited to Stockholm)
+
+# For production, create an account on https://openmaptiles.com and order the area you're interested in. It's free for open source projects
+wget -c https://openmaptiles.os.zhdk.cloud.switch.ch/v3.6.1/extracts/europe/Ln7cD6GfqRE2v2Gt21u0NFzjVtXL7HwC/2017-07-03_sweden_stockholm.mbtiles
+

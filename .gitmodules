@@ -1,3 +1,6 @@
 [submodule "skyddsrum/ipfs-maps"]
 	path = skyddsrum/ipfs-maps
 	url = https://github.com/davidar/ipfs-maps
+[submodule "skyddsrum/openmaptiles"]
+	path = skyddsrum/openmaptiles
+	url = git@github.com:openmaptiles/openmaptiles.git
