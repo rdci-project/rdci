@@ -3,6 +3,7 @@ import subprocess
 import tarfile
 import time
 
+import click
 import requests
 
 IPFS_URL="https://dist.ipfs.io/go-ipfs/v0.4.14/go-ipfs_v0.4.14_linux-amd64.tar.gz"
@@ -49,3 +50,41 @@ class cd:
 
     def __exit__(self, etype, value, traceback):
         os.chdir(self.savedPath)
+
+
+class Printer():
+
+    @classmethod
+    def start(cls, message):
+        """Print start message."""
+        cls.echo(icon='●', tag='start', message=message, color='blue')
+
+    @classmethod
+    def info(cls, message):
+        """Print info message."""
+        cls.echo(icon='ℹ', tag='info', message=message, color='blue')
+    
+    @classmethod
+    def success(cls, message):
+        """Print success message."""
+        cls.echo(icon='✔', tag='success', message=message, color='green')
+
+    @classmethod
+    def warn(cls, message):
+        """Print warning message."""
+        cls.echo(icon='⚠', tag='warn', message=message, color='yellow')
+
+    @classmethod
+    def error(cls, message):
+        """Print error message."""
+        cls.echo(icon='✖', tag='error', message=message, color='red')
+    
+    @classmethod
+    def ready(cls, message):
+        """Print ready message."""
+        cls.echo(icon='♥', tag='ready', message=message, color='green')
+
+    @staticmethod
+    def echo(icon, tag, message, color):
+        prefix = click.style(f"{icon:3} {tag}", fg=color)
+        click.echo(f"{prefix:19} {message}")
