@@ -10,7 +10,7 @@ setup(
     author='None',
     author_email='None',
     url="https://gitlab.com/hackingforsweden/hfs2018",
-    install_requires=["click", "requests"],
+    install_requires=["click", "requests", "mkdocs", "mkdocs-material"],
     packages=find_packages(exclude=["tests*"]),
     test_suite="tests",
     license='MIT',
