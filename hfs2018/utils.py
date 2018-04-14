@@ -21,21 +21,33 @@ def download_ipfs():
     tar.extractall()
     tar.close()
 
-    return IPFS_BIN_LOCATION
 
-
-def run_ipfs_daemon():
-    process = subprocess.Popen([IPFS_BIN_LOCATION, "daemon"])
+def run_ipfs_daemon(ipfs_exe):
+    process = subprocess.Popen([ipfs_exe, "daemon"])
     time.sleep(5)
     return process
 
-def add_to_ipfs(dir_path):
-    process = subprocess.Popen([IPFS_BIN_LOCATION, "add", "-r", dir_path])
+def add_to_ipfs(ipfs_exe, dir_path):
+    process = subprocess.Popen([ipfs_exe, "add", "-r", dir_path])
     exit_code = process.wait()
     if exit_code == 0:
         return True
     else:
         return False
+
+
+class ipfs_daemon:
+    """Context manager for launching IPFS daemon."""
+    def __init__(self, ipfs_bin):
+        self.process = None
+        self.ipfs_bin = ipfs_bin
+    
+    def __enter__(self):
+        self.process = run_ipfs_daemon(self.ipfs_bin)
+    
+    def __exit__(self, etype, value, traceback):
+        self.process.terminate()
+
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -84,5 +96,5 @@ class Printer():
 
     @staticmethod
     def echo(icon, tag, message, color):
-        prefix = click.style(f"{icon:3} {tag}", fg=color)
+        prefix = click.style(f"{icon:2} {tag}", fg=color)
         click.echo(f"{prefix:19} {message}")

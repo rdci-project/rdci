@@ -37,3 +37,8 @@ def setup_site(output_dir, name=None):
     
     with open(first_page_path, 'w') as handle:
         handle.write(__doc__)
+
+
+def add_content(output_dir, name):
+    """Add new content to the site."""
+    click.edit()
