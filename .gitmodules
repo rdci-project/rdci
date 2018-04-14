@@ -4,3 +4,6 @@
 [submodule "skyddsrum/openmaptiles"]
 	path = skyddsrum/openmaptiles
 	url = git@github.com:openmaptiles/openmaptiles.git
+[submodule "skyddsrum/tippecanoe"]
+	path = skyddsrum/tippecanoe
+	url = https://github.com/mapbox/tippecanoe
