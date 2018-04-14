@@ -8,6 +8,8 @@ import os
 import click
 import yaml
 
+from hfs2018.utils import Printer
+
 def setup_site(output_dir, name=None):
     """Setup a new site."""
     data_dir = os.path.join(output_dir, 'data')
@@ -41,4 +43,20 @@ def setup_site(output_dir, name=None):
 
 def add_content(output_dir, name):
     """Add new content to the site."""
-    click.edit()
+    message = edit_content(name=name)
+    file_path = os.path.join(output_dir, 'data', f"{name}.md")
+    if os.path.exists(file_path):
+        raise OSError(f"File already exists: {file_path}")
+
+    with open(file_path, 'w') as handle:
+        handle.write(message)
+
+def edit_content(name=None):
+    template = f"""# {name or 'title'}
+
+Text...
+    """
+    MARKER = '# Everything below is ignored\n'
+    message = click.edit(f'{template}\n\n' + MARKER)
+    if message is not None:
+        return message.split(MARKER, 1)[0].rstrip('\n')
