@@ -10,13 +10,8 @@ from mkdocs.commands.serve import serve
 from mkdocs.commands.build import build
 from mkdocs.config import load_config
 
-<<<<<<< Updated upstream
-from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, ipfs_daemon,
-                           add_to_ipfs, cd, Printer)
-=======
 from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
                            add_to_ipfs, cd, Printer, update_ipns_record, IPFSException)
->>>>>>> Stashed changes
 from hfs2018.site import setup_site
 
 DEFAULT_SITE_DIR = './content'
