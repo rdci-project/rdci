@@ -1,9 +1,9 @@
 .PHONY: all
 
-all: export-vectortiles db-schema import-naturalearth raster-datasource
+all: skyddsrum.json 
 
-shapefile:
-	docker build -t naturalearthtiles/export-vectortiles src/export-vectortiles
+skyddsrum.json:
+	ogr2ogr -f GeoJSON skyddsrum.json -t_srs EPSG:4326 skyddsrum-data/Inspire_skyddsrum.shp
 
 # db-schema:
 # 	docker build -t naturalearthtiles/db-schema src/db-schema
