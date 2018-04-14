@@ -1,12 +1,13 @@
-import shutil
 import subprocess
 import sys
 import os.path
 import os
+import tempfile
 
 import click
 
-from hfs2018.utils import download_ipfs, IPFS_BIN_LOCATION
+
+from hfs2018.utils import download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon, add_to_ipfs
 
 
 @click.group()
@@ -34,7 +35,15 @@ def init():
 
 @main.command("add")
 def add():
-    click.echo("Add")
+    if not os.path.exists(IPFS_BIN_LOCATION):
+        click.echo("Please run hfs2018 init first..")
+        sys.exit(1)
+
+    ipfs_daemon_process = run_ipfs_daemon()
+    fh = click.edit()
+    add_to_ipfs(fh)
+    ipfs_daemon_process.terminate()
+
 
 @main.command("run")
 def run():
