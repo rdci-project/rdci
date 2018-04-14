@@ -50,7 +50,8 @@ def init(name):
 
 @main.command()
 @click.pass_context
-def publish(context):
+@click.option('--skip_update_ipns', default=False, is_flag=True)
+def publish(context, skip_update_ipns):
     Printer.start("Publishing your site to IPFS...")
     with cd(DEFAULT_SITE_DIR):
         Printer.info("Building site...")
@@ -60,16 +61,19 @@ def publish(context):
         Printer.error("Please run 'hfs2018 init' first")
         context.abort()
 
-    Printer.info('Uploading to IPFS and updating IPNS record. This may take some time...')
+    Printer.info('Uploading to IPFS and updating IPNS record (optional). This may take some time...')
     with ipfs_daemon(IPFS_BIN):
         site_output_dir = os.path.join(DEFAULT_SITE_DIR, "site")
-        Printer.info("We are uploading the site now...")
+        Printer.info("We are uploading the site to IPFS now...")
         site_hash = add_to_ipfs(site_output_dir)
-        Printer.info("We are updating the IPNS record now...")
-        ipns_hash = update_ipns_record(site_hash)
+        Printer.info(f"The site is available at https://gateway.ipfs.io/ipfs/{site_hash}")
 
-    Printer.ready(f'Your site is available on IPFS/IPNS! You can reach it via:'
-                  f' https://gateway.ipfs.io/ipns/{ipns_hash}')
+        if not skip_update_ipns:
+            Printer.info("We are updating the IPNS record now...")
+            ipns_hash = update_ipns_record(site_hash)
+
+            Printer.ready(f'Your site is available on IPNS! You can reach it via:'
+                          f' https://gateway.ipfs.io/ipns/{ipns_hash}')
 
 
 @main.command()
