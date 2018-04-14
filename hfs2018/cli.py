@@ -45,14 +45,13 @@ def init(output_dir, name=None):
 
 @main.command()
 @click.pass_context
-def add(context):
+def publish(context):
     if not os.path.exists(IPFS_BIN_LOCATION):
         Printer.error("Please run hfs2018 init first..")
         context.abort()
 
     ipfs_daemon_process = run_ipfs_daemon()
-    fh = click.edit()
-    add_to_ipfs(fh)
+    add_to_ipfs("site/")
     ipfs_daemon_process.terminate()
 
 
@@ -65,8 +64,8 @@ def run(directory):
 
 
 @main.command()
-def publish():
-    Printer.start("Publish")
+def add():
+    Printer.start("Add")
 
 
 if __name__ == '__main__':

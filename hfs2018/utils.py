@@ -29,10 +29,8 @@ def run_ipfs_daemon():
     time.sleep(5)
     return process
 
-def add_to_ipfs(file_content):
-    process = subprocess.Popen([IPFS_BIN_LOCATION, "add"], stdin=subprocess.PIPE)
-    process.stdin.write(bytes(file_content, encoding="UTF-8"))
-    process.stdin.close()
+def add_to_ipfs(dir_path):
+    process = subprocess.Popen([IPFS_BIN_LOCATION, "add", "-r", dir_path])
     exit_code = process.wait()
     if exit_code == 0:
         return True
