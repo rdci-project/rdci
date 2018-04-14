@@ -3,4 +3,5 @@ node_modules/
 *.dbf
 package-lock.json
 *.mbtiles
+map/
 

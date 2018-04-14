@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Partly documented in https://github.com/davidar/ipfs-maps
+pushd ipfs-maps
+npm install
+npm run build
+popd
+
+mkdir -p ./map/js/
+rm ./map/static
+
+mv ipfs-maps/pub/bundle.js ./map/js/map.js
+
+cd ./map
+../mbutil/mb-util ../sweden_stockholm.mbtiles static
+
+
+echo "Manually move ./map to your website dir"
+
