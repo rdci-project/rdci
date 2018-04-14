@@ -10,9 +10,10 @@ from mkdocs.commands.serve import serve
 from mkdocs.commands.build import build
 from mkdocs.config import load_config
 
-from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
-                           add_to_ipfs, cd, Printer, update_ipns_record, IPFSException)
-from hfs2018.site import setup_site
+from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, ipfs_daemon,
+                           add_to_ipfs, cd, Printer, update_ipns_record,
+                           IPFSException)
+from hfs2018.site import setup_site, add_content
 
 DEFAULT_SITE_DIR = './content'
 IPFS_BIN = shutil.which('ipfs') or IPFS_BIN_LOCATION
@@ -57,7 +58,7 @@ def publish(context):
         build(load_config(config_file='./mkdocs.yml'))
 
     if not os.path.exists(IPFS_BIN):
-        Printer.error("Please run hfs2018 init first..")
+        Printer.error("Please run 'hfs2018 init' first")
         context.abort()
 
     Printer.info('Uploading to IPFS')
@@ -77,8 +78,19 @@ def run():
 
 
 @main.command()
-def add():
+@click.argument('name')
+@click.pass_context
+def add(context, name):
     Printer.start("Add new content...")
+    if not os.path.exists(DEFAULT_SITE_DIR):
+        Printer.error("Please run 'hfs2018 init' first")
+        context.abort()
+    try:
+        add_content(DEFAULT_SITE_DIR, name)
+    except OSError as error:
+        Printer.error(error.args[0])
+        context.abort()
+    Printer.success("New content added to site!")
 
 
 if __name__ == '__main__':
