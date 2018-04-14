@@ -24,8 +24,14 @@ def setup_site(output_dir, name=None):
 
     config_data = {
         'site_name': name or os.path.basename(output_dir),
-        'theme': 'material',
+        'theme': {
+            'name': 'material',
+            'custom_dir': 'theme',
+        },
         'docs_dir': 'data',
+        'markdown_extensions': [
+            'meta'
+        ]
     }
 
     with open(config_path, 'w') as handle:
