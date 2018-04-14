@@ -3,13 +3,19 @@ import sys
 import os.path
 import os
 import tempfile
+import shutil
 
 import click
 from mkdocs.commands.serve import serve
+from mkdocs.commands.build import build
+from mkdocs.config import load_config
 
-from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
+from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, ipfs_daemon,
                            add_to_ipfs, cd, Printer)
 from hfs2018.site import setup_site
+
+DEFAULT_SITE_DIR = './content'
+IPFS_BIN = shutil.which('ipfs') or IPFS_BIN_LOCATION
 
 
 @click.group()
@@ -18,11 +24,10 @@ def main():
 
 
 @main.command()
-@click.argument('output_dir', type=click.Path(exists=False))
-@click.argument('name', required=False)
-def init(output_dir, name=None):
-    Printer.start(f"Setting up new site: {output_dir}")
-    if not os.path.exists(IPFS_BIN_LOCATION):
+@click.argument('name')
+def init(name):
+    Printer.start(f"Setting up new site: {DEFAULT_SITE_DIR}")
+    if not os.path.exists(IPFS_BIN):
         Printer.warn("You don't have IPFS. Don't worry I'll download it for you...")
         download_ipfs()
 
@@ -30,7 +35,7 @@ def init(output_dir, name=None):
         Printer.info("IPFS has already been inititated. Skipping that...")
     else:
         Printer.info("Initiating IPFS")
-        exit_code = subprocess.call([IPFS_BIN_LOCATION, "init"])
+        exit_code = subprocess.call([IPFS_BIN, "init"])
         if exit_code == 0:
             Printer.success("Successfully initiated IPFS")
         else:
@@ -38,34 +43,41 @@ def init(output_dir, name=None):
             sys.exit(1)
     
     Printer.ready('New site setup successfully!')
-    setup_site(output_dir, name=name)
+    setup_site(DEFAULT_SITE_DIR, name=name)
     Printer.info('To preview your site, run:')
-    Printer.info(f"hfs2018 run {output_dir}")
+    Printer.info('hfs2018 run')
 
 
 @main.command()
 @click.pass_context
 def publish(context):
-    if not os.path.exists(IPFS_BIN_LOCATION):
+    Printer.start("Publishing your site to IPFS...")
+    with cd(DEFAULT_SITE_DIR):
+        Printer.info("Building site...")
+        build(load_config(config_file='./mkdocs.yml'))
+
+    if not os.path.exists(IPFS_BIN):
         Printer.error("Please run hfs2018 init first..")
         context.abort()
 
-    ipfs_daemon_process = run_ipfs_daemon()
-    add_to_ipfs("site/")
-    ipfs_daemon_process.terminate()
+    Printer.info('Uploading to IPFS')
+    with ipfs_daemon(IPFS_BIN):
+        site_output_dir = os.path.join(DEFAULT_SITE_DIR, "site")
+        add_to_ipfs(IPFS_BIN, site_output_dir)
+
+    Printer.ready('Your site is available on IPFS!')
 
 
 @main.command()
-@click.argument('directory', type=click.Path(exists=True))
-def run(directory):
+def run():
     """Start the development server to preview output."""
-    with cd(directory):
+    with cd(DEFAULT_SITE_DIR):
         serve()
 
 
 @main.command()
 def add():
-    Printer.start("Add")
+    Printer.start("Add new content...")
 
 
 if __name__ == '__main__':
