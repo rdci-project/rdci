@@ -68,7 +68,7 @@ def publish(context):
     Printer.info('Uploading to IPFS')
     with ipfs_daemon(IPFS_BIN):
         site_output_dir = os.path.join(DEFAULT_SITE_DIR, "site")
-        site_hash = add_to_ipfs(IPFS_BIN, site_output_dir)
+        site_hash = add_to_ipfs(site_output_dir)
         ipns_hash = update_ipns_record(site_hash)
 
     Printer.ready('Your site is available on IPFS/IPNS!')
