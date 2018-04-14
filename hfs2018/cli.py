@@ -8,7 +8,8 @@ import click
 from mkdocs.commands.serve import serve
 
 from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
-                           add_to_ipfs, cd)
+                           add_to_ipfs, cd, Printer)
+from hfs2018.site import setup_site
 
 
 @click.group()
@@ -17,28 +18,37 @@ def main():
 
 
 @main.command()
-def init():
+@click.argument('output_dir', type=click.Path(exists=False))
+@click.argument('name', required=False)
+def init(output_dir, name=None):
+    Printer.start(f"Setting up new site: {output_dir}")
     if not os.path.exists(IPFS_BIN_LOCATION):
-        click.echo("You don't have IPFS. Don't worry I'll download it for you...")
+        Printer.warn("You don't have IPFS. Don't worry I'll download it for you...")
         download_ipfs()
 
     if os.path.exists(os.path.join(os.environ.get("HOME"), ".ipfs")):
-        click.echo("IPFS has already been inititated. Skipping that...")
+        Printer.info("IPFS has already been inititated. Skipping that...")
     else:
-        click.echo("Initiating IPFS")
+        Printer.info("Initiating IPFS")
         exit_code = subprocess.call([IPFS_BIN_LOCATION, "init"])
         if exit_code == 0:
-            click.echo("Successfully initiated IPFS")
+            Printer.success("Successfully initiated IPFS")
         else:
-            click.echo("Failed to initiate IPFS")
+            Printer.error("Failed to initiate IPFS")
             sys.exit(1)
+    
+    Printer.ready('New site setup successfully!')
+    setup_site(output_dir, name=name)
+    Printer.info('To preview your site, run:')
+    Printer.info(f"hfs2018 run {output_dir}")
 
 
 @main.command()
-def add():
+@click.pass_context
+def add(context):
     if not os.path.exists(IPFS_BIN_LOCATION):
-        click.echo("Please run hfs2018 init first..")
-        sys.exit(1)
+        Printer.error("Please run hfs2018 init first..")
+        context.abort()
 
     ipfs_daemon_process = run_ipfs_daemon()
     fh = click.edit()
@@ -56,7 +66,7 @@ def run(directory):
 
 @main.command()
 def publish():
-    click.echo("Publish")
+    Printer.start("Publish")
 
 
 if __name__ == '__main__':
