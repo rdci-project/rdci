@@ -35,27 +35,16 @@ def run_ipfs_daemon(ipfs_exe):
 
 
 def add_to_ipfs(dir_path):
-    process = subprocess.Popen([IPFS_BIN_LOCATION, "add", "-r", "-Q", dir_path])
-    exit_code = process.wait()
-    if exit_code == 0:
-        ipfs_site_hash = process.stdout
-        return ipfs_site_hash
-    else:
-        raise IPFSException("The was a problem adding to IPFS")
+    stdout = subprocess.check_output([IPFS_BIN_LOCATION, "add", "-r", "-Q", dir_path])
+    return str(stdout.strip(), encoding="UTF-8")
 
 
 def update_ipns_record(site_hash):
-    process = subprocess.Popen([IPFS_BIN_LOCATION, "name", "publish", "-Q", site_hash])
-    exit_code = process.wait()
-
-    if exit_code == 0:
-        stdout = process.stdout
-        regex = r"^Published to (\w+)\:\s\/ipfs\/(\w+)$"
-        matches = re.finditer(regex, stdout)
-        ipns_hash = matches[0]
-        return ipns_hash
-    else:
-        raise IPFSException("The was a problem updating IPNS")
+    output = subprocess.check_output([IPFS_BIN_LOCATION, "name", "publish", site_hash])
+    regex = r"^Published to (\w+)\:\s\/ipfs\/(\w+)$"
+    matches = re.finditer(regex, str(output.strip(), encoding="UTF-8"))
+    ipns_hash = matches[0]
+    return ipns_hash
 
 
 class ipfs_daemon(object):

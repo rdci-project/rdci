@@ -11,8 +11,7 @@ from mkdocs.commands.build import build
 from mkdocs.config import load_config
 
 from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, ipfs_daemon,
-                           add_to_ipfs, cd, Printer, update_ipns_record,
-                           IPFSException)
+                           add_to_ipfs, cd, Printer, update_ipns_record)
 from hfs2018.site import setup_site, add_content
 
 DEFAULT_SITE_DIR = './content'
@@ -61,13 +60,16 @@ def publish(context):
         Printer.error("Please run 'hfs2018 init' first")
         context.abort()
 
-    Printer.info('Uploading to IPFS')
+    Printer.info('Uploading to IPFS and updating IPNS record. This may take some time...')
     with ipfs_daemon(IPFS_BIN):
         site_output_dir = os.path.join(DEFAULT_SITE_DIR, "site")
+        Printer.info("We are uploading the site now...")
         site_hash = add_to_ipfs(site_output_dir)
+        Printer.info("We are updating the IPNS record now...")
         ipns_hash = update_ipns_record(site_hash)
 
-    Printer.ready('Your site is available on IPFS/IPNS!')
+    Printer.ready(f'Your site is available on IPFS/IPNS! You can reach it via:'
+                  f' https://gateway.ipfs.io/ipns/{ipns_hash}')
 
 
 @main.command()
