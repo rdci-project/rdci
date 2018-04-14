@@ -41,9 +41,9 @@ def add_to_ipfs(dir_path):
 
 def update_ipns_record(site_hash):
     output = subprocess.check_output([IPFS_BIN_LOCATION, "name", "publish", site_hash])
-    regex = r"^Published to (\w+)\:\s\/ipfs\/(\w+)$"
-    matches = re.finditer(regex, str(output.strip(), encoding="UTF-8"))
-    ipns_hash = matches[0]
+    regex = re.compile("^Published\sto\s(\w+)\:\s\/ipfs\/(\w+)$")
+    match = regex.match(str(output.strip(), encoding="UTF-8"))
+    ipns_hash =  match.group(1)
     return ipns_hash
 
 
