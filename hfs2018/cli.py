@@ -10,8 +10,13 @@ from mkdocs.commands.serve import serve
 from mkdocs.commands.build import build
 from mkdocs.config import load_config
 
+<<<<<<< Updated upstream
 from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, ipfs_daemon,
                            add_to_ipfs, cd, Printer)
+=======
+from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
+                           add_to_ipfs, cd, Printer, update_ipns_record, IPFSException)
+>>>>>>> Stashed changes
 from hfs2018.site import setup_site
 
 DEFAULT_SITE_DIR = './content'
@@ -63,9 +68,10 @@ def publish(context):
     Printer.info('Uploading to IPFS')
     with ipfs_daemon(IPFS_BIN):
         site_output_dir = os.path.join(DEFAULT_SITE_DIR, "site")
-        add_to_ipfs(IPFS_BIN, site_output_dir)
+        site_hash = add_to_ipfs(IPFS_BIN, site_output_dir)
+        ipns_hash = update_ipns_record(site_hash)
 
-    Printer.ready('Your site is available on IPFS!')
+    Printer.ready('Your site is available on IPFS/IPNS!')
 
 
 @main.command()

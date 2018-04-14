@@ -2,6 +2,7 @@ import os
 import subprocess
 import tarfile
 import time
+import re
 
 import click
 import requests
@@ -9,6 +10,11 @@ import requests
 IPFS_URL="https://dist.ipfs.io/go-ipfs/v0.4.14/go-ipfs_v0.4.14_linux-amd64.tar.gz"
 LOCAL_FILE="go-ipfs.tar.gz"
 IPFS_BIN_LOCATION = "go-ipfs/ipfs"
+
+
+class IPFSException(Exception):
+    pass
+
 
 def download_ipfs():
     r = requests.get(IPFS_URL, stream=True)
@@ -27,16 +33,32 @@ def run_ipfs_daemon(ipfs_exe):
     time.sleep(5)
     return process
 
-def add_to_ipfs(ipfs_exe, dir_path):
-    process = subprocess.Popen([ipfs_exe, "add", "-r", dir_path])
+
+def add_to_ipfs(dir_path):
+    process = subprocess.Popen([IPFS_BIN_LOCATION, "add", "-r", "-Q", dir_path])
     exit_code = process.wait()
     if exit_code == 0:
-        return True
+        ipfs_site_hash = process.stdout
+        return ipfs_site_hash
     else:
-        return False
+        raise IPFSException("The was a problem adding to IPFS")
 
 
-class ipfs_daemon:
+def update_ipns_record(site_hash):
+    process = subprocess.Popen([IPFS_BIN_LOCATION, "name", "publish", "-Q", site_hash])
+    exit_code = process.wait()
+
+    if exit_code == 0:
+        stdout = process.stdout
+        regex = r"^Published to (\w+)\:\s\/ipfs\/(\w+)$"
+        matches = re.finditer(regex, stdout)
+        ipns_hash = matches[0]
+        return ipns_hash
+    else:
+        raise IPFSException("The was a problem updating IPNS")
+
+
+class ipfs_daemon(object):
     """Context manager for launching IPFS daemon."""
     def __init__(self, ipfs_bin):
         self.process = None
@@ -49,7 +71,7 @@ class ipfs_daemon:
         self.process.terminate()
 
 
-class cd:
+class cd(object):
     """Context manager for changing the current working directory"""
     def __init__(self, newPath):
         self.newPath = os.path.expanduser(newPath)
@@ -62,7 +84,7 @@ class cd:
         os.chdir(self.savedPath)
 
 
-class Printer():
+class Printer(object):
 
     @classmethod
     def start(cls, message):
