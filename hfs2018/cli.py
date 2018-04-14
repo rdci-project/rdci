@@ -5,16 +5,18 @@ import os
 import tempfile
 
 import click
+from mkdocs.commands.serve import serve
 
-
-from hfs2018.utils import download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon, add_to_ipfs
+from hfs2018.utils import (download_ipfs, IPFS_BIN_LOCATION, run_ipfs_daemon,
+                           add_to_ipfs, cd)
 
 
 @click.group()
 def main():
     pass
 
-@main.command("init")
+
+@main.command()
 def init():
     if not os.path.exists(IPFS_BIN_LOCATION):
         click.echo("You don't have IPFS. Don't worry I'll download it for you...")
@@ -32,8 +34,7 @@ def init():
             sys.exit(1)
 
 
-
-@main.command("add")
+@main.command()
 def add():
     if not os.path.exists(IPFS_BIN_LOCATION):
         click.echo("Please run hfs2018 init first..")
@@ -45,11 +46,15 @@ def add():
     ipfs_daemon_process.terminate()
 
 
-@main.command("run")
-def run():
-    click.echo("Run")
+@main.command()
+@click.argument('directory', type=click.Path(exists=True))
+def run(directory):
+    """Start the development server to preview output."""
+    with cd(directory):
+        serve()
 
-@main.command("publish")
+
+@main.command()
 def publish():
     click.echo("Publish")
 
