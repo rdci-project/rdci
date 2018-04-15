@@ -28,6 +28,8 @@ In the demo we've uploaded data from the Swedish police. We also have a map for 
 
 Note that any static data can be hosted on IPFS.
 
+We've got some more info on https://devpost.com/software/resilient-distributed-crisis-information.
+
 # About IPFS
 
 From Wikipedia:
@@ -38,4 +40,3 @@ From Wikipedia:
 
 * IPFS is still in the incubation state. This means that usability is not what you might be used to and pulling and pushing data can be slower than you're used to.
 * This is an entry in a hackathon and it still needs a lot of TLC.
-
