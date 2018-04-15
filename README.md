@@ -7,13 +7,15 @@ of crisis.
 
 Please take a look at the trailer: https://youtu.be/pYnihoYzVU4
 
-IPFS address (through gateway) of the demo: 
+The demo can be reached through IPFS via the hash `QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe`. This is a single DNS-like name which can be altered to point to different content by site administrators.
 
-https://goo.gl/8r4D8A
-
-The shortened link points to:
+You can reach the site via regular HTTP (proxy) by visiting:
 
 [https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe](https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe)
+
+or equivalently
+
+https://goo.gl/8r4D8A
 
 # Details
 
