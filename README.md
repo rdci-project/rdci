@@ -7,7 +7,13 @@ of crisis.
 
 Please take a look at the trailer: https://youtu.be/pYnihoYzVU4
 
-IPFS address (through gateway) of the demo: [https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe](https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe)
+IPFS address (through gateway) of the demo: 
+
+https://goo.gl/8r4D8A
+
+The shortened link points to:
+
+[https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe](https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe)
 
 # Details
 
