@@ -1,9 +1,10 @@
-baseurl = "/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe/"
+#baseurl = "https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe/"
+baseurl = ""
 title = "RDCI"
 languageCode = "en-us"
 
 # Pagination
-paginate = 3
+paginate = 5
 paginatePath = "page"
 
 # Theme to use
