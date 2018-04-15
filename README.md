@@ -5,17 +5,18 @@ This project is an entry in the hackathon Hack for Sweden 2018.
 RDCI is a proof-of-concept demonstrating how public information can be placed on IPFS in order to make it resilient in a time 
 of crisis.
 
-Please take a look at the trailer: https://youtu.be/pYnihoYzVU4
+The Internet is currently centralized and can be compromised in different ways by various entities. IPFS is however decentralized. You can think about it like bitcoin or git applied to the whole Internet.
 
 The demo can be reached through IPFS via the hash `QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe`. This is a single DNS-like name which can be altered to point to different content by site administrators.
+
+
+Please take a look at the trailer: https://youtu.be/pYnihoYzVU4
 
 You can reach the site via regular HTTP (proxy) by visiting:
 
 [https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe](https://gateway.ipfs.io/ipns/QmcL7KRwGCPsABq4YhJA7XeGHuXuUQxjcTUg7Wk3QWWAKe)
 
-or equivalently
-
-https://goo.gl/8r4D8A
+or equivalently at https://goo.gl/8r4D8A
 
 # Details
 
